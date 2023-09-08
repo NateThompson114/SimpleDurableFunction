@@ -13,6 +13,14 @@
       "type": "storage.azure",
       "connectionId": "AzureStorageConnectionString",
       "dynamicId": null
+    },
+    "appConfig1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ServiceLinker/locations/eastus/connectors/AppConfig_32EBC72611",
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.AppConfiguration/configurationStores/ntappconfig",
+      "type": "appConfig.azure",
+      "connectionId": "AppConfig",
+      "dynamicId": null
     }
   }
 }
