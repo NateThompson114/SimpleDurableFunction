@@ -2,38 +2,27 @@
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs;
 using System.Threading.Tasks;
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using SimpleDurableFunction.Validators;
 
 namespace SimpleDurableFunction
 {
-    public class ValidationResult
-    {
-        public bool IsValid { get; set; }
-        public string Message { get; set; }
-    }
-
-    public class StringValidator : AbstractValidator<string>
-    {
-        public StringValidator()
-        {
-            RuleFor(str => str).NotNull().NotEmpty().WithMessage("The string must not be empty");
-        }
-    }
-
     public class DurableFunctionExample
     {
         private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
+        private readonly IStringValidator _stringValidator;
         private readonly IConfigurationRefresher _configurationRefresher;
+        
 
-        public DurableFunctionExample(IFeatureManagerSnapshot featureManagerSnapshot, IConfigurationRefresherProvider refresherProvider)
+        public DurableFunctionExample(IFeatureManagerSnapshot featureManagerSnapshot, IConfigurationRefresherProvider refresherProvider, IStringValidator stringValidator)
         {
             _featureManagerSnapshot = featureManagerSnapshot;
+            _stringValidator = stringValidator;
             _configurationRefresher = refresherProvider.Refreshers.First();
         }
 
@@ -90,7 +79,7 @@ namespace SimpleDurableFunction
 
             string name = req.Query["name"];
 
-           
+            _stringValidator.Validate(name);
 
             return name != null
                 ? (ActionResult)new OkObjectResult($"Hello, {name}: {instanceId}")
