@@ -46,10 +46,12 @@ namespace SimpleDurableFunction
             if (featureEnabled)
             {
                 log.LogInformation("The feature flag was active");
+                //MyService1()
             }
             else
             {
                 log.LogInformation("The feature flag was NOT active");
+                //MyService2()
             }
 
             var result = await context.CallActivityAsync<string>("Activity", input);
